@@ -21,10 +21,16 @@ class _HomeViewState extends State<HomeView> {
       list.add(
         Product(
           name: faker.food.dish(),
-          image: faker.image.image(),
+          image: faker.image.image(
+            keywords: ['food'],
+          ),
           price: faker.randomGenerator.decimal(
             min: 0.99,
-            scale: 100,
+            scale: 100.0,
+          ),
+          rate: faker.randomGenerator.decimal(
+            min: 1.0,
+            scale: 5.0,
           ),
           releaseDate: faker.date.dateTime(
             minYear: 2020,
@@ -38,7 +44,29 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Hello world'),
+        actions: [
+          DropdownButton(
+            value: const Locale('en', 'US'),
+            items: const [
+              DropdownMenuItem(
+                value: Locale('en', 'US'),
+                child: Text('English'),
+              ),
+              DropdownMenuItem(
+                value: Locale('es', 'ES'),
+                child: Text('Español'),
+              ),
+              DropdownMenuItem(
+                value: Locale('es', 'EC'),
+                child: Text('Español Ecuador'),
+              ),
+            ],
+            onChanged: (_) {},
+          ),
+        ],
+      ),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
