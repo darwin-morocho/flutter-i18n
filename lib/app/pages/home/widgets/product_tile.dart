@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:i18n/app/models/product.dart';
+import 'package:i18n/generated/translations.g.dart';
 import 'package:intl/intl.dart';
 
 class ProductTile extends StatelessWidget {
@@ -49,8 +49,6 @@ class ProductTile extends StatelessWidget {
   }
 
   Future<void> _show(BuildContext context) {
-    final texts = AppLocalizations.of(context)!;
-
     return showModalBottomSheet(
       context: context,
       builder: (_) => SafeArea(
@@ -62,22 +60,22 @@ class ProductTile extends StatelessWidget {
             children: [
               Center(
                 child: Text(
-                  texts.summary,
+                  texts.home.summary,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(height: 20),
               Text(
-                texts.productName(product.name,'🔥'),
+                texts.home.productName(name: product.name, emoji: '🔥'),
               ),
               Text(
-                texts.price(
-                  NumberFormat('###,###.##').format(product.price),
+                texts.home.price(
+                  price: NumberFormat('###,###.##').format(product.price),
                 ),
               ),
               Text(
-                texts.releaseDate(
-                  DateFormat.MMMEd().format(product.releaseDate),
+                texts.home.releaseDate(
+                  date: DateFormat.MMMEd().format(product.releaseDate),
                 ),
               ),
               const SizedBox(height: 30),
@@ -86,8 +84,8 @@ class ProductTile extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(
-                    texts.payNow(
-                      NumberFormat.currency().format(product.price),
+                    texts.home.payNow(
+                      total: NumberFormat.currency().format(product.price),
                     ),
                   ),
                 ),

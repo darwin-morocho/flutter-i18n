@@ -1,9 +1,9 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:i18n/app/models/product.dart';
-import 'package:i18n/app/my_app.dart';
 import 'package:i18n/app/pages/home/widgets/product_tile.dart';
+import 'package:i18n/generated/translations.g.dart';
+import 'package:intl/intl.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -45,33 +45,43 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = context.findAncestorStateOfType<MyAppState>();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context)!.helloWorld,
+          texts.home.helloWorld,
         ),
         actions: [
           DropdownButton(
-            value: appState?.locale,
-            items: const [
+            value: TranslationProvider.of(context).locale,
+            items: [
               DropdownMenuItem(
-                value: Locale('en'),
-                child: Text('English'),
+                value: AppLocale.en,
+                child: Text(
+                  texts.homeDropdownButton.english,
+                ),
               ),
               DropdownMenuItem(
-                value: Locale('es'),
-                child: Text('Español'),
+                value: AppLocale.es,
+                child: Text(
+                  texts.homeDropdownButton.spanish,
+                ),
               ),
               DropdownMenuItem(
-                value: Locale('es', 'EC'),
-                child: Text('Español Ecuador'),
+                value: AppLocale.esEc,
+                child: Text(
+                  texts.homeDropdownButton.spanishEcuador,
+                ),
               ),
             ],
             onChanged: (locale) {
               if (locale != null) {
-                appState?.changeLanguage(locale);
+                LocaleSettings.setLocale(locale);
+                if (locale.countryCode?.isNotEmpty ?? false) {
+                  Intl.defaultLocale =
+                      '${locale.languageCode}_${locale.countryCode}';
+                } else {
+                  Intl.defaultLocale = locale.languageCode;
+                }
               }
             },
           ),

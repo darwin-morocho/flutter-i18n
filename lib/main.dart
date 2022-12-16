@@ -7,7 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:intl/number_symbols.dart';
 import 'package:intl/number_symbols_data.dart';
 
+import 'generated/translations.g.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocaleSettings.useDeviceLocale();
   final languageCode = ui.window.locale.languageCode;
   final countryCode = ui.window.locale.countryCode;
   String defaultLocale = languageCode;
@@ -32,9 +36,8 @@ void main() {
   );
 
   runApp(
-    MyApp(
-      defaultLanguageCode: languageCode,
-      defaultCountryCode: countryCode ?? '',
+    TranslationProvider(
+      child: MyApp(),
     ),
   );
 }
