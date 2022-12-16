@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:i18n/app/models/product.dart';
+import 'package:intl/intl.dart';
 
 class ProductTile extends StatelessWidget {
   const ProductTile({super.key, required this.product});
@@ -25,7 +27,7 @@ class ProductTile extends StatelessWidget {
                     right: 5,
                     child: Chip(
                       label: Text(
-                        product.rate.toStringAsFixed(1),
+                        NumberFormat('###.#').format(product.rate),
                       ),
                     ),
                   ),
@@ -34,11 +36,11 @@ class ProductTile extends StatelessWidget {
             ),
             Text(product.name),
             Text(
-              product.price.toStringAsFixed(2),
+              NumberFormat.currency().format(product.price),
               style: const TextStyle(fontSize: 20),
             ),
             Text(
-              product.releaseDate.toString(),
+              DateFormat.yMEd().format(product.releaseDate),
             ),
           ],
         ),
@@ -47,6 +49,8 @@ class ProductTile extends StatelessWidget {
   }
 
   Future<void> _show(BuildContext context) {
+    final texts = AppLocalizations.of(context)!;
+
     return showModalBottomSheet(
       context: context,
       builder: (_) => SafeArea(
@@ -56,22 +60,36 @@ class ProductTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Center(
+              Center(
                 child: Text(
-                  'SUMMARY',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  texts.summary,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(height: 20),
-              Text('Product: ${product.name}'),
-              Text('Price: ${product.price.toStringAsFixed(2)}'),
-              Text('Release date: ${product.releaseDate}'),
+              Text(
+                texts.productName(product.name,'🔥'),
+              ),
+              Text(
+                texts.price(
+                  NumberFormat('###,###.##').format(product.price),
+                ),
+              ),
+              Text(
+                texts.releaseDate(
+                  DateFormat.MMMEd().format(product.releaseDate),
+                ),
+              ),
               const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('PAY NOW ${product.price.toStringAsFixed(2)}'),
+                  child: Text(
+                    texts.payNow(
+                      NumberFormat.currency().format(product.price),
+                    ),
+                  ),
                 ),
               ),
             ],
